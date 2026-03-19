@@ -45,6 +45,7 @@ type MSGraphResourceCollectionModel struct {
 	Id                   types.String      `tfsdk:"id"`
 	ApiVersion           types.String      `tfsdk:"api_version"`
 	Url                  types.String      `tfsdk:"url"`
+	CollectionType       types.String      `tfsdk:"collection_type"`
 	ReferenceIds         types.List        `tfsdk:"reference_ids"`
 	ReadQueryParameters  types.Map         `tfsdk:"read_query_parameters"`
 	Retry                retry.Value       `tfsdk:"retry"`
@@ -86,6 +87,13 @@ func (r *MSGraphResourceCollection) Schema(ctx context.Context, req resource.Sch
 				Computed:            true,
 				Validators:          []validator.String{stringvalidator.OneOf("v1.0", "beta")},
 				Default:             stringdefault.StaticString("v1.0"),
+			},
+
+			"collection_type": schema.StringAttribute{
+				MarkdownDescription: "The OData collection type path used when constructing `@odata.id` references. Defaults to `directoryObjects`. Override this for APIs that require a specific collection type, e.g. `identityGovernance/entitlementManagement/accessPackages`.",
+				Optional:            true,
+				Computed:            true,
+				Default:             stringdefault.StaticString("directoryObjects"),
 			},
 
 			"reference_ids": schema.ListAttribute{
@@ -299,7 +307,7 @@ func (r *MSGraphResourceCollection) applyCollection(ctx context.Context, model *
 	errs := make([]error, 0)
 	for _, item := range toAdd {
 		body := map[string]string{}
-		body["@odata.id"] = fmt.Sprintf("%s/%s/directoryObjects/%s", r.client.GraphBaseUrl(), model.ApiVersion.ValueString(), item)
+		body["@odata.id"] = fmt.Sprintf("%s/%s/%s/%s", r.client.GraphBaseUrl(), model.ApiVersion.ValueString(), model.CollectionType.ValueString(), item)
 		_, err := r.client.Create(ctx, model.Url.ValueString(), model.ApiVersion.ValueString(), body, clients.RequestOptions{RetryOptions: clients.NewRetryOptions(model.Retry)})
 		if err != nil {
 			errs = append(errs, err)
@@ -366,6 +374,7 @@ func (r *MSGraphResourceCollection) ImportState(ctx context.Context, req resourc
 		Id:                  types.StringValue(baseCollectionUrl(urlValue)),
 		Url:                 types.StringValue(urlValue),
 		ApiVersion:          types.StringValue(apiVersion),
+		CollectionType:      types.StringValue("directoryObjects"),
 		ReferenceIds:        types.ListNull(types.StringType),
 		ReadQueryParameters: types.MapNull(types.ListType{ElemType: types.StringType}),
 		Retry:               retry.NewValueNull(),
