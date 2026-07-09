@@ -202,13 +202,13 @@ func (client *MSGraphClient) List(ctx context.Context, url string, apiVersion st
 	return out, nil
 }
 
-func (client *MSGraphClient) Create(ctx context.Context, url string, apiVersion string, body interface{}, options RequestOptions) (interface{}, error) {
+func (client *MSGraphClient) Create(ctx context.Context, url string, apiVersion string, body interface{}, options RequestOptions) (interface{}, string, error) {
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
 	}
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, apiVersion, url))
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 	reqQP := req.Raw().URL.Query()
 	for key, value := range options.QueryParameters {
@@ -220,23 +220,29 @@ func (client *MSGraphClient) Create(ctx context.Context, url string, apiVersion 
 		req.Raw().Header.Set(key, value)
 	}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
+		return nil, "", err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(resp)
+		return nil, "", runtime.NewResponseError(resp)
 	}
 
-	// TODO: Handle long-running operations if needed
+	// Only use Location on a synchronous 201 Created. On 202 Accepted it points to
+	// a long-running-operation monitor URL, not the created resource.
+	// TODO: Handle long-running (202 Accepted) operations if needed.
+	location := ""
+	if resp.StatusCode == http.StatusCreated {
+		location = resp.Header.Get("Location")
+	}
 
 	var responseBody interface{}
 	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
-		return nil, err
+		return nil, location, err
 	}
-	return responseBody, nil
+	return responseBody, location, nil
 }
 
 func (client *MSGraphClient) Update(ctx context.Context, url string, apiVersion string, body interface{}, options RequestOptions) (interface{}, error) {
