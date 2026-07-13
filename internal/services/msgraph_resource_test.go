@@ -161,16 +161,14 @@ func TestAcc_ResourceRetryOnThrottle(t *testing.T) {
 
 	r := MSGraphTestResource{}
 
-	const count = 60
-
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.throttleRetry(count),
+			Config: r.throttleRetry(60),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(fmt.Sprintf("%s.0", data.ResourceName)).Exists(r),
 				check.That(fmt.Sprintf("%s.0", data.ResourceName)).Key("id").IsUUID(),
-				check.That(fmt.Sprintf("%s.%d", data.ResourceName, count-1)).Exists(r),
-				check.That(fmt.Sprintf("%s.%d", data.ResourceName, count-1)).Key("id").IsUUID(),
+				check.That(fmt.Sprintf("%s.%d", data.ResourceName, 59)).Exists(r),
+				check.That(fmt.Sprintf("%s.%d", data.ResourceName, 59)).Key("id").IsUUID(),
 			),
 		},
 	})
