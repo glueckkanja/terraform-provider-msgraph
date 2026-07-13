@@ -1,0 +1,82 @@
+# Terraform Provider testing workflow.
+name: Tests
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+  push:
+    paths-ignore:
+      - 'README.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: aquaproj/aqua-installer@a78671ff723534c879a9c8aa62c99a3a05dddb49 # v4.0.5
+        with:
+          aqua_version: v2.61.0
+          aqua_opts: ''
+        env:
+          AQUA_GITHUB_TOKEN: ${{ github.token }}
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: go.mod
+          cache: true
+      - run: go mod download
+      - run: go build -v .
+      - run: aqua -c aqua/aqua.yml exec -- just lint
+
+  generate:
+    name: Generated code is up to date
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: aquaproj/aqua-installer@a78671ff723534c879a9c8aa62c99a3a05dddb49 # v4.0.5
+        with:
+          aqua_version: v2.61.0
+          aqua_opts: ''
+        env:
+          AQUA_GITHUB_TOKEN: ${{ github.token }}
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: go.mod
+          cache: true
+      - run: aqua -c aqua/aqua.yml exec -- just docs
+      - name: Verify generated code
+        run: |
+          git diff --compact-summary --exit-code || \
+            (echo; echo "Unexpected difference after code generation. Run 'go generate ./...' and commit the result."; exit 1)
+
+  test:
+    name: Unit tests
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: aquaproj/aqua-installer@a78671ff723534c879a9c8aa62c99a3a05dddb49 # v4.0.5
+        with:
+          aqua_version: v2.61.0
+          aqua_opts: ''
+        env:
+          AQUA_GITHUB_TOKEN: ${{ github.token }}
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: go.mod
+          cache: true
+      - run: go mod download
+      - run: aqua -c aqua/aqua.yml exec -- just test
+        env:
+          GITHUB_ACTIONS_STAGE: UNIT_TESTS
