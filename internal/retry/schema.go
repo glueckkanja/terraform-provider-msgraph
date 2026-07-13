@@ -3,11 +3,11 @@ package retry
 import (
 	"context"
 
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/myvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/microsoft/terraform-provider-msgraph/internal/myvalidator"
 )
 
 func Schema(ctx context.Context) schema.Attribute {

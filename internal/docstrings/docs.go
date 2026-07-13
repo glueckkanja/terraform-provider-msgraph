@@ -11,7 +11,7 @@ func Url(kind string) string {
 	case "data":
 		return "The URL of the data source. It supports both collection URL which is used to list resources, for example `/users`, and item URL which is used to read an individual resource, for example `/users/{id}`."
 	case "resource":
-		return `The URL which is used to manage the resource. It supports two types of URLs:  
+		return `The URL which is used to manage the resource. It supports two types of URLs:
   - Collection URL which is used to make a POST request to create a new resource, for example, "/users", it must support the following operations:
 	- Create a new resource: POST "/users"
     - Read an existing resource: GET "/users/{id}"
@@ -20,9 +20,9 @@ func Url(kind string) string {
   - URL which has a "$ref" suffix, for example, "/groups/{group-id}/members/$ref", it must support the following operations:
 	- Add a reference to a resource: POST "/groups/{group-id}/members/$ref"
 	- Remove a reference to a resource: DELETE "/groups/{group-id}/members/{id}/$ref"
-  
-  More information about the Microsoft Graph API can be found at [Microsoft Graph API](https://docs.microsoft.com/en-us/graph/overview).  
-  And there are some [examples](https://github.com/microsoft/terraform-provider-msgraph/tree/main/examples/quickstarts) to help you get started.
+
+  More information about the Microsoft Graph API can be found at [Microsoft Graph API](https://docs.microsoft.com/en-us/graph/overview).
+  And there are some [examples](https://github.com/glueckkanja/terraform-provider-msgraph/tree/main/examples/quickstarts) to help you get started.
 `
 	case "update_resource":
 		return `The item URL of the existing resource to update, for example "/users/{id}".
@@ -31,8 +31,8 @@ func Url(kind string) string {
 		- Read an existing resource: GET "/users/{id}"
 		- Update an existing resource: PATCH "/users/{id}"
 
-	More information about the Microsoft Graph API can be found at [Microsoft Graph API](https://docs.microsoft.com/en-us/graph/overview).  
-	There are also [examples](https://github.com/microsoft/terraform-provider-msgraph/tree/main/examples/quickstarts) to help you get started.`
+	More information about the Microsoft Graph API can be found at [Microsoft Graph API](https://docs.microsoft.com/en-us/graph/overview).
+	There are also [examples](https://github.com/glueckkanja/terraform-provider-msgraph/tree/main/examples/quickstarts) to help you get started.`
 	default:
 		return ""
 	}
@@ -51,7 +51,7 @@ The output HCL object containing the properties specified in %[1]sresponse_expor
 	   // it will output the value of app_id
 	   value = msgraph_resource.application.output.app_id
 	 }
-	 
+
 	 output "all" {
 	   // it will output the whole response
 	   value = msgraph_resource.application.output.all

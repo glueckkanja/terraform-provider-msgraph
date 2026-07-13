@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/acceptance"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/microsoft/terraform-provider-msgraph/internal/acceptance"
 )
 
 // TestAccAuth_clientSecret tests authentication using client secret

@@ -6,6 +6,11 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/clients"
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/docstrings"
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/dynamic"
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/retry"
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -19,11 +24,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/microsoft/terraform-provider-msgraph/internal/clients"
-	"github.com/microsoft/terraform-provider-msgraph/internal/docstrings"
-	"github.com/microsoft/terraform-provider-msgraph/internal/dynamic"
-	"github.com/microsoft/terraform-provider-msgraph/internal/retry"
-	"github.com/microsoft/terraform-provider-msgraph/internal/utils"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.

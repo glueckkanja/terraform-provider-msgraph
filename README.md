@@ -2,12 +2,11 @@
 
 The MSGraph provider is a very thin layer on top of the MSGraph REST APIs. Use this new provider to authenticate to and manage MSGraph resources and functionality using the MSGraph APIs directly.
 
-
 ## Get started with MSGraph
 
 * [Microsoft Terraform VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform) provides a rich authoring experience to help you use the MSGraph provider.
 
-Also, there is a rich library of [examples](https://github.com/Microsoft/terraform-provider-msgraph/tree/main/examples) to help you get started.
+Also, there is a rich library of [examples](https://github.com/glueckkanja/terraform-provider-msgraph/tree/main/examples) to help you get started.
 
 ## Usage Example
 
@@ -45,68 +44,66 @@ Further [usage documentation is available on the Terraform website](https://regi
 
 ## Developer Requirements
 
-* [Terraform](https://www.terraform.io/downloads.html) version 0.12.x + (but 1.x is recommended)
-* [Go](https://golang.org/doc/install) version 1.18.x (to build the provider plugin)
+* [Go](https://go.dev/doc/install) version specified in `go.mod`
+* [Aqua](https://aquaproj.github.io/) to install the pinned development toolchain
 
 ### On Windows
 
 If you're on Windows you'll also need:
 
 * [Git Bash for Windows](https://git-scm.com/download/win)
-* [Make for Windows](http://gnuwin32.sourceforge.net/packages/make.htm)
-
-For *GNU32 Make*, make sure its bin path is added to PATH environment variable.*
 
 For *Git Bash for Windows*, at the step of "Adjusting your PATH environment", please choose "Use Git and optional Unix tools from Windows Command Prompt".*
 
-Or install via [Chocolatey](https://chocolatey.org/install) (`Git Bash for Windows` must be installed per steps above)
+Install Git, Go, and Aqua via [Chocolatey](https://chocolatey.org/install) (`Git Bash for Windows` must be installed per steps above):
 
 ```powershell
-choco install make golang terraform -y
+choco install git golang aqua -y
 refreshenv
 ```
 
-You must run `Developing the Provider` commands in `bash` because `sh` scrips are invoked as part of these.
+You must run the following commands in `bash` because shell scripts are invoked as part of the recipes.
 
 ## Developing the Provider
 
-If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version 1.18+ is **required**). You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
-
-First clone the repository to: `$GOPATH/src/github.com/Microsoft/terraform-provider-msgraph`
+If you wish to work on the provider, install Go and Aqua, then clone the repository:
 
 ```sh
-mkdir -p $GOPATH/src/github.com/Microsoft; cd $GOPATH/src/github.com/Microsoft
-git clone git@github.com:Microsoft/terraform-provider-msgraph.git
-cd $GOPATH/src/github.com/Microsoft/terraform-provider-msgraph
+git clone git@github.com:glueckkanja/terraform-provider-msgraph.git
+cd terraform-provider-msgraph
 ```
 
-Once inside the provider directory, you can run `make tools` to install the dependent tooling required to compile the provider.
-
-At this point you can compile the provider by running `make build`, which will build the provider and put the provider binary in the `$GOPATH/bin` directory.
+Install the repository's checksum-verified toolchain, including Just:
 
 ```sh
-$ make build
+aqua -c aqua/aqua.yml install
+```
+
+At this point, compile the provider with Just:
+
+```sh
+$ aqua -c aqua/aqua.yml exec -- just build
 ...
-$ $GOPATH/bin/terraform-provider-msgraph
+$ ./terraform-provider-msgraph
 ...
 ```
 
 You can also cross-compile if necessary:
 
 ```sh
-GOOS=windows GOARCH=amd64 make build
+GOOS=windows GOARCH=amd64 aqua -c aqua/aqua.yml exec -- just build
 ```
 
 In order to run the `Unit Tests` for the provider, you can run:
 
 ```sh
-make test
+aqua -c aqua/aqua.yml exec -- just test
 ```
 
-The majority of tests in the provider are `Acceptance Tests` - which provisions real resources in Azure. It's possible to run the entire acceptance test suite by running `make testacc` - however it's likely you'll want to run a subset, which you can do using a prefix, by running:
+The majority of tests in the provider are `Acceptance Tests` - which provision real resources in Azure. Run the entire acceptance test suite with `just testacc`; to run a subset:
 
 ```sh
-make acctests TESTARGS='-run=<nameOfTheTest>' TESTTIMEOUT='60m'
+TESTARGS='-run=<nameOfTheTest>' aqua -c aqua/aqua.yml exec -- just testacc
 ```
 
 * `<nameOfTheTest>` should be self-explanatory as it is the name of the test you want to run. An example could be `TestAccGenericResource_basic`. Since `-run` can be used with regular expressions you can use it to specify multiple tests like in `TestAccGenericResource_` to run all tests that match that expression
@@ -127,13 +124,13 @@ Please ensure that the `MarkdownDescription` field is set in the schema for each
 To generate the documentation run either:
 
 ```sh
-$ make docs
+aqua -c aqua/aqua.yml exec -- just docs
 ```
 
 or...
 
 ```sh
-$ go generate ./...
+go generate ./...
 ```
 
 ### Templates
@@ -156,7 +153,7 @@ When using Terraform 0.14 and later, after successfully compiling the Azure Prov
 
 For example, add the following to `~/.terraformrc` for a provider binary located in `/home/developer/go/bin`:
 
-```
+```hcl
 provider_installation {
 
   # Use /home/developer/go/bin as an overridden package directory

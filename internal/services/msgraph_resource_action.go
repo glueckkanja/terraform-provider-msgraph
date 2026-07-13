@@ -6,6 +6,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/clients"
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/docstrings"
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/retry"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -16,9 +19,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/microsoft/terraform-provider-msgraph/internal/clients"
-	"github.com/microsoft/terraform-provider-msgraph/internal/docstrings"
-	"github.com/microsoft/terraform-provider-msgraph/internal/retry"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
