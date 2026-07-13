@@ -5,7 +5,7 @@ ENHANCEMENTS:
 - `msgraph_resource_collection`: Added support for `skip_destroy` attribute to remove the resource from state without removing the references on destroy. This allows deleting a parent resource (such as a group) that would otherwise fail with constraints like "The group must have at least one owner, hence this owner cannot be removed." ([#78](https://github.com/microsoft/terraform-provider-msgraph/issues/78))
 
 BUG FIXES:
-- Fixed an issue where the post-creation existence check did not apply the retry policy, causing transient errors such as `429 Too Many Requests` to fail the apply instead of being retried ([#129](https://github.com/microsoft/terraform-provider-msgraph/issues/129))
+- Fixed an issue where transient errors such as `429 Too Many Requests` were not retried during create, delete, and the create/delete consistency checks, causing operations to fail under throttling. Retry of transient failures (`429` and `5xx`) is now applied by default regardless of whether a `retry` block is configured ([#129](https://github.com/microsoft/terraform-provider-msgraph/issues/129))
 
 ## 0.3.0
 

@@ -122,13 +122,11 @@ func NewRetryOptionsForReadAfterCreate() *policy.RetryOptions {
 	}
 }
 
-// NewRetryOptions creates a RetryOptions based on the provided retry.RetryValue.
+// NewRetryOptions returns a RetryOptions that retries transient failures (429 and
+// 5xx) with a high retry count bounded by the context deadline.
 func NewRetryOptions(rtry retry.Value) *policy.RetryOptions {
-	if rtry.IsNull() || rtry.IsUnknown() {
-		return nil
-	}
+	userConfigured := !rtry.IsNull() && !rtry.IsUnknown()
 
-	log.Printf("[DEBUG] Using custom retry configuration")
 	return &policy.RetryOptions{
 		// Set a very high max retries to make sure context deadline is respected.
 		MaxRetries:  math.MaxInt16,
@@ -141,8 +139,10 @@ func NewRetryOptions(rtry retry.Value) *policy.RetryOptions {
 				}
 			}
 
-			// Get the error message to check against regex patterns,
-			// If use the err.Error() string first, else get the response error from the HTTP response.
+			if !userConfigured {
+				return false
+			}
+
 			var errorMsg string
 			if err != nil {
 				errorMsg = err.Error()
@@ -152,7 +152,6 @@ func NewRetryOptions(rtry retry.Value) *policy.RetryOptions {
 					errorMsg = responseErr.Error()
 				}
 			}
-			// Check if the error message matches any of the retryable error regexps
 			if errorMsg == "" {
 				return false
 			}
