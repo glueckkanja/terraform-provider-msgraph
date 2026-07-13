@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/acceptance"
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/clients"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/microsoft/terraform-provider-msgraph/internal/acceptance"
-	"github.com/microsoft/terraform-provider-msgraph/internal/clients"
 )
 
 type MSGraphResourceActionDataSourceTestResource struct{}

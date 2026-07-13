@@ -1,0 +1,17 @@
+---
+# aqua - Declarative CLI Version Manager
+# https://aquaproj.github.io/
+checksum:
+  enabled: true
+  require_checksum: true
+registries:
+  - type: standard
+    ref: v4.536.1 # renovate: depName=aquaproj/aqua-registry
+packages:
+  - name: casey/just@1.56.0
+  - name: goreleaser/goreleaser@v2.17.0
+  - name: golangci/golangci-lint@v2.12.2
+  - name: hashicorp/terraform@v1.15.8
+  - name: katbyte/terrafmt@v0.5.6
+  - name: mvdan/gofumpt@v0.10.0
+  - name: golang/vuln/govulncheck@v1.6.0

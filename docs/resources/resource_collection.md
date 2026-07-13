@@ -19,9 +19,9 @@ Manage the full contents of a child reference collection (such as group members 
      }
    }
  }
- 
+
  provider "msgraph" {}
- 
+
  resource "msgraph_resource" "application_a" {
    url = "applications"
    body = {
@@ -31,14 +31,14 @@ Manage the full contents of a child reference collection (such as group members 
      appId = "appId"
    }
  }
- 
+
  resource "msgraph_resource" "sp_a" {
    url = "servicePrincipals"
    body = {
      appId = msgraph_resource.application_a.output.appId
    }
  }
- 
+
  resource "msgraph_resource" "application_b" {
    url = "applications"
    body = {
@@ -48,14 +48,14 @@ Manage the full contents of a child reference collection (such as group members 
      appId = "appId"
    }
  }
- 
+
  resource "msgraph_resource" "sp_b" {
    url = "servicePrincipals"
    body = {
      appId = msgraph_resource.application_b.output.appId
    }
  }
- 
+
  resource "msgraph_resource" "group" {
    url = "groups"
    body = {
@@ -65,11 +65,11 @@ Manage the full contents of a child reference collection (such as group members 
      securityEnabled = true
    }
  }
- 
+
  resource "msgraph_resource_collection" "group_members" {
    url = "groups/${msgraph_resource.group.id}/members/$ref"
-   // This API has a known issue where service principals are not listed as group members in v1.0. As a workaround, 
-   // use this API on the beta endpoint or use the /groups/{id}?$expand=members API. For more information, 
+   // This API has a known issue where service principals are not listed as group members in v1.0. As a workaround,
+   // use this API on the beta endpoint or use the /groups/{id}?$expand=members API. For more information,
    // see the related known issue: https://developer.microsoft.com/en-us/graph/known-issues/?search=25984
    api_version   = "beta"
    reference_ids = [msgraph_resource.sp_a.id, msgraph_resource.sp_b.id]
@@ -117,7 +117,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 	   // it will output the value of app_id
 	   value = msgraph_resource.application.output.app_id
 	 }
-	 
+
 	 output "all" {
 	   // it will output the whole response
 	   value = msgraph_resource.application.output.all
@@ -147,7 +147,7 @@ Optional:
  ```shell
  # MSGraph resource collection can be imported using the collection $ref URL, e.g.
  terraform import msgraph_resource_collection.group_members groups/00000000-0000-0000-0000-000000000000/members/$ref
- 
+
  # To import using the beta API version, append the api-version query parameter:
  terraform import msgraph_resource_collection.group_members 'groups/00000000-0000-0000-0000-000000000000/members/$ref?api-version=beta'
  ```

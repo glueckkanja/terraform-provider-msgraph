@@ -67,7 +67,7 @@ For other arguments, please refer to the [msgraph_resource](https://registry.ter
  ```shell
  # MSGraph resource can be imported using the resource id, e.g.
  terraform import msgraph_resource.example /identityGovernance/entitlementManagement/accessPackages/{accessPackages-id}
- 
+
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
  terraform import msgraph_resource.example /identityGovernance/entitlementManagement/accessPackages/{accessPackages-id}?api-version=v1.0
  ```

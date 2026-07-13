@@ -25,25 +25,25 @@ This resource can manage a subset of any existing Microsoft Graph resource's pro
      }
    }
  }
- 
+
  provider "msgraph" {}
  provider "azuread" {}
- 
+
  # This example creates an application using azuread provider first (so we have something to update),
  # then uses msgraph_update_resource to PATCH its displayName.
- 
+
  resource "azuread_application" "application" {
    display_name = "Demo App"
- 
+
    lifecycle {
      ignore_changes = [display_name]
    }
  }
- 
+
  resource "msgraph_update_resource" "application_update" {
    # Point directly at the item URL you want to PATCH
    url = "applications/${azuread_application.application.object_id}"
- 
+
    body = {
      displayName = "Demo App Updated"
    }
@@ -61,8 +61,8 @@ This resource can manage a subset of any existing Microsoft Graph resource's pro
 		- Read an existing resource: GET "/users/{id}"
 		- Update an existing resource: PATCH "/users/{id}"
 
-	More information about the Microsoft Graph API can be found at [Microsoft Graph API](https://docs.microsoft.com/en-us/graph/overview).  
-	There are also [examples](https://github.com/microsoft/terraform-provider-msgraph/tree/main/examples/quickstarts) to help you get started.
+	More information about the Microsoft Graph API can be found at [Microsoft Graph API](https://docs.microsoft.com/en-us/graph/overview).
+	There are also [examples](https://github.com/glueckkanja/terraform-provider-msgraph/tree/main/examples/quickstarts) to help you get started.
 
 ### Optional
 
@@ -100,7 +100,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 	   // it will output the value of app_id
 	   value = msgraph_resource.application.output.app_id
 	 }
-	 
+
 	 output "all" {
 	   // it will output the whole response
 	   value = msgraph_resource.application.output.all
@@ -124,5 +124,3 @@ Optional:
 - `delete` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
 - `read` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.
 - `update` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-
-

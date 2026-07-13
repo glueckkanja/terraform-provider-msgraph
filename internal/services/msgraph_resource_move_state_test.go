@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/acceptance"
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/acceptance/check"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
-	"github.com/microsoft/terraform-provider-msgraph/internal/acceptance"
-	"github.com/microsoft/terraform-provider-msgraph/internal/acceptance/check"
 )
 
 func externalProvidersAzureAD() map[string]resource.ExternalProvider {

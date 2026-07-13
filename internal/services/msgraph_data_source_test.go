@@ -5,9 +5,9 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/acceptance"
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/acceptance/check"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/microsoft/terraform-provider-msgraph/internal/acceptance"
-	"github.com/microsoft/terraform-provider-msgraph/internal/acceptance/check"
 )
 
 type MSGraphTestDataSource struct{}

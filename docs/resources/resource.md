@@ -19,10 +19,10 @@ This resource can manage any Microsoft Graph API resource.
      }
    }
  }
- 
+
  provider "msgraph" {
  }
- 
+
  resource "msgraph_resource" "application" {
    url = "applications"
    body = {
@@ -33,16 +33,16 @@ This resource can manage any Microsoft Graph API resource.
      app_id = "appId"
    }
  }
- 
+
  output "app_id" {
    value = msgraph_resource.application.output.app_id
  }
- 
+
  output "all" {
    // it will output the whole response
    value = msgraph_resource.application.output.all
  }
- 
+
  output "resource_url" {
    // it will output something like "applications/12345678-1234-1234-1234-123456789abc"
    value = msgraph_resource.application.resource_url
@@ -54,7 +54,7 @@ This resource can manage any Microsoft Graph API resource.
 
 ### Required
 
-- `url` (String) The URL which is used to manage the resource. It supports two types of URLs:  
+- `url` (String) The URL which is used to manage the resource. It supports two types of URLs:
   - Collection URL which is used to make a POST request to create a new resource, for example, "/users", it must support the following operations:
 	- Create a new resource: POST "/users"
     - Read an existing resource: GET "/users/{id}"
@@ -63,9 +63,9 @@ This resource can manage any Microsoft Graph API resource.
   - URL which has a "$ref" suffix, for example, "/groups/{group-id}/members/$ref", it must support the following operations:
 	- Add a reference to a resource: POST "/groups/{group-id}/members/$ref"
 	- Remove a reference to a resource: DELETE "/groups/{group-id}/members/{id}/$ref"
-  
-  More information about the Microsoft Graph API can be found at [Microsoft Graph API](https://docs.microsoft.com/en-us/graph/overview).  
-  And there are some [examples](https://github.com/microsoft/terraform-provider-msgraph/tree/main/examples/quickstarts) to help you get started.
+
+  More information about the Microsoft Graph API can be found at [Microsoft Graph API](https://docs.microsoft.com/en-us/graph/overview).
+  And there are some [examples](https://github.com/glueckkanja/terraform-provider-msgraph/tree/main/examples/quickstarts) to help you get started.
 
 ### Optional
 
@@ -105,7 +105,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 	   // it will output the value of app_id
 	   value = msgraph_resource.application.output.app_id
 	 }
-	 
+
 	 output "all" {
 	   // it will output the whole response
 	   value = msgraph_resource.application.output.all
@@ -137,7 +137,7 @@ Optional:
  # MSGraph resource can be imported using the resource id, e.g.
  terraform import msgraph_resource.servicePrincipal /servicePrincipals/00000000-0000-0000-0000-000000000000
  terraform import msgraph_resource.member /groups/group-id/members/$ref/00000000-0000-0000-0000-000000000000
- 
+
  # For resources that use the beta API, append ?api-version=beta to the import ID:
  terraform import msgraph_resource.settings '/settings/00000000-0000-0000-0000-000000000000?api-version=beta'
  ```

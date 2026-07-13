@@ -3,12 +3,12 @@
 # Check gofmt
 echo "==> Checking that code complies with gofmt requirements..."
 
-# This filter should match the search filter in ../GNUMakefile
+# This filter should match the search filter in ../justfile
 gofmt_files=$(find . -name '*.go' | grep -v vendor | xargs gofmt -l)
 if [ -n "${gofmt_files}" ]; then
     echo 'gofmt needs running on the following files:'
     echo "${gofmt_files}"
-    echo "You can use the command: \`make fmt\` to reformat code."
+    echo "You can use the command: \`just fmt\` to reformat code."
     exit 1
 fi
 

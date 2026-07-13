@@ -5,8 +5,8 @@ import (
 	"flag"
 	"log"
 
+	"github.com/glueckkanja/terraform-provider-msgraph/internal/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
-	"github.com/microsoft/terraform-provider-msgraph/internal/provider"
 )
 
 // Run the docs generation tool, check its repository for more information on how it works and how docs
