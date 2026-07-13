@@ -112,9 +112,11 @@ func NewRetryOptionsForReadAfterCreate() *policy.RetryOptions {
 		ShouldRetry: func(resp *http.Response, err error) bool {
 			// We need to test for status codes here too. This covers the case that these options are combined with
 			// retry options from NewRetryOptions, because the ShouldRetry function takes precedence over StatusCodes.
-			for _, code := range statusCodes {
-				if resp.StatusCode == code {
-					return true
+			if resp != nil {
+				for _, code := range statusCodes {
+					if resp.StatusCode == code {
+						return true
+					}
 				}
 			}
 			return false
@@ -122,11 +124,13 @@ func NewRetryOptionsForReadAfterCreate() *policy.RetryOptions {
 	}
 }
 
-// NewRetryOptions returns a RetryOptions that retries transient failures (429 and
-// 5xx) with a high retry count bounded by the context deadline.
+// NewRetryOptions creates a RetryOptions based on the provided retry.RetryValue.
 func NewRetryOptions(rtry retry.Value) *policy.RetryOptions {
-	userConfigured := !rtry.IsNull() && !rtry.IsUnknown()
+	if rtry.IsNull() || rtry.IsUnknown() {
+		return nil
+	}
 
+	log.Printf("[DEBUG] Using custom retry configuration")
 	return &policy.RetryOptions{
 		// Set a very high max retries to make sure context deadline is respected.
 		MaxRetries:  math.MaxInt16,
@@ -139,10 +143,8 @@ func NewRetryOptions(rtry retry.Value) *policy.RetryOptions {
 				}
 			}
 
-			if !userConfigured {
-				return false
-			}
-
+			// Get the error message to check against regex patterns,
+			// If use the err.Error() string first, else get the response error from the HTTP response.
 			var errorMsg string
 			if err != nil {
 				errorMsg = err.Error()
@@ -152,6 +154,7 @@ func NewRetryOptions(rtry retry.Value) *policy.RetryOptions {
 					errorMsg = responseErr.Error()
 				}
 			}
+			// Check if the error message matches any of the retryable error regexps
 			if errorMsg == "" {
 				return false
 			}
