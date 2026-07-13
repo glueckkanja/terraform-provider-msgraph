@@ -19,15 +19,15 @@ This resource can perform any Microsoft Graph API action. Use this for operation
      }
    }
  }
- 
+
  provider "msgraph" {}
- 
+
  # Example 1: Send a welcome email to a user
  resource "msgraph_resource_action" "send_welcome_email" {
    resource_url = "users/john@example.com"
    action       = "sendMail"
    method       = "POST"
- 
+
    body = {
      message = {
        subject = "Welcome to the organization!"
@@ -47,30 +47,30 @@ This resource can perform any Microsoft Graph API action. Use this for operation
      saveToSentItems = true
    }
  }
- 
+
  # Example 2: Reset a user's password
  resource "msgraph_resource_action" "reset_user_password" {
    resource_url = "users/jane@example.com"
    action       = "changePassword"
    method       = "POST"
- 
+
    body = {
      currentPassword = "OldPassword123!"
      newPassword     = "NewSecurePassword456!"
    }
  }
- 
+
  # Example 3: Send a custom notification with specific headers
  resource "msgraph_resource_action" "send_notification" {
    resource_url = "communications/calls"
    action       = "logTeleconferenceDeviceQuality"
    method       = "POST"
- 
+
    headers = {
      "ConsistencyLevel" = "eventual"
      "X-AnchorMailbox"  = "john@example.com"
    }
- 
+
    body = {
      quality = {
        timestamp = "2024-01-01T00:00:00Z"
@@ -78,36 +78,36 @@ This resource can perform any Microsoft Graph API action. Use this for operation
      }
    }
  }
- 
+
  resource "msgraph_resource_action" "custom_user_action" {
    resource_url = "users/john@example.com"
    action       = "customAction"
    method       = "POST"
- 
+
    query_parameters = {
      "$select" = ["id", "displayName"]
      "force"   = ["true"]
    }
- 
+
    headers = {
      "X-Custom-Header"  = "custom-value"
      "X-Request-Source" = "terraform"
      "Content-Language" = "en-US"
    }
- 
+
    body = {
      actionType = "sync"
      parameters = {
        syncAll = true
      }
    }
- 
+
    response_export_values = {
      result_id   = "id"
      status      = "status"
      all_details = "@"
    }
- 
+
    retry = {
      error_message_regex = [
        ".*throttled.*",
@@ -115,16 +115,16 @@ This resource can perform any Microsoft Graph API action. Use this for operation
      ]
    }
  }
- 
+
  # Output the results
  output "welcome_email_sent" {
    value = msgraph_resource_action.send_welcome_email.output
  }
- 
+
  output "notification_sent" {
    value = msgraph_resource_action.send_notification.output
  }
- 
+
  output "custom_action_result" {
    value = msgraph_resource_action.custom_user_action.output
  }
@@ -173,7 +173,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 	   // it will output the value of app_id
 	   value = msgraph_resource.application.output.app_id
 	 }
-	 
+
 	 output "all" {
 	   // it will output the whole response
 	   value = msgraph_resource.application.output.all
@@ -194,5 +194,3 @@ Required:
 Optional:
 
 - `create` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-
-

@@ -15,7 +15,8 @@ testacc: fmtcheck
 
 # Check that generated provider documentation is committed.
 docs:
-  go generate ./...
+  AQUA_CONFIG="{{ justfile_directory() }}/aqua/aqua.yml" go generate ./...
+  find docs/data-sources docs/resources -name '*.md' -exec perl -0pi -e 's/[ \t]+(?=\n)//g; s/(?:\n[ \t]*)+\z/\n/' {} +
 
 # Apply Go and Terraform formatting.
 fmt:

@@ -1,36 +1,6 @@
 {
   "checksums": [
     {
-      "id": "github_release/github.com/bflad/tfproviderlint/v0.31.0/tfproviderlint_0.31.0_darwin_amd64.tar.gz",
-      "checksum": "7A943EC7F1EAD8B7EA6AC95C40F93F5D410C56BEA7BD78CBA9C8B354ABA0471B",
-      "algorithm": "sha256"
-    },
-    {
-      "id": "github_release/github.com/bflad/tfproviderlint/v0.31.0/tfproviderlint_0.31.0_darwin_arm64.tar.gz",
-      "checksum": "0327F53B61B75C64FDCBA91BBBE973E06A34453CB86014984FCE19B3BE6F4D36",
-      "algorithm": "sha256"
-    },
-    {
-      "id": "github_release/github.com/bflad/tfproviderlint/v0.31.0/tfproviderlint_0.31.0_linux_amd64.tar.gz",
-      "checksum": "FC42B3A024628C5A2B63824A6F53AB3AD3E4274756249A9339C736BDFCED1B51",
-      "algorithm": "sha256"
-    },
-    {
-      "id": "github_release/github.com/bflad/tfproviderlint/v0.31.0/tfproviderlint_0.31.0_linux_arm64.tar.gz",
-      "checksum": "3925BE5F092C1BED526B15BF1A1EB2690AB7C75C1161A54D2E9537BF1A8FCCAC",
-      "algorithm": "sha256"
-    },
-    {
-      "id": "github_release/github.com/bflad/tfproviderlint/v0.31.0/tfproviderlint_0.31.0_windows_amd64.zip",
-      "checksum": "0E69B3ED169FCBF990350BD64ACBB3CF78CBF1E17AF4E76676750D20E9F13DDE",
-      "algorithm": "sha256"
-    },
-    {
-      "id": "github_release/github.com/bflad/tfproviderlint/v0.31.0/tfproviderlint_0.31.0_windows_arm64.zip",
-      "checksum": "114C90A1613A833B0EA3250DF6BB7589C0F3B46C030359738D4B47CD9F4BE305",
-      "algorithm": "sha256"
-    },
-    {
       "id": "github_release/github.com/casey/just/1.56.0/just-1.56.0-aarch64-apple-darwin.tar.gz",
       "checksum": "F35798D4BCDC4DB020EEF7D2853AD98BBFB97A4D29EE695BA042F18E7FEDCC11",
       "algorithm": "sha256"

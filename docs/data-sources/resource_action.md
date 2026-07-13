@@ -154,7 +154,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 	   // it will output the value of app_id
 	   value = msgraph_resource.application.output.app_id
 	 }
-	 
+
 	 output "all" {
 	   // it will output the whole response
 	   value = msgraph_resource.application.output.all
