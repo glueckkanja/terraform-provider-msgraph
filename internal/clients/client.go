@@ -94,7 +94,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 			AllowedQueryParams: allowedQueryParams,
 		},
 		// Baseline retry policy applied to every request: retry transient failures
-		// (429 and 5xx) using azcore's built-in status-code matching. MaxRetries is set
+		// using azcore's built-in status-code matching. MaxRetries is set
 		// very high so the effective retry budget is bounded by each operation's context
 		// deadline rather than a fixed count. Per-request overrides (user-configured
 		// `retry` regex and read-after-create 404/403 handling) are layered on top via

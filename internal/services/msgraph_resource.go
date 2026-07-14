@@ -364,7 +364,7 @@ func (r *MSGraphResource) Update(ctx context.Context, req resource.UpdateRequest
 
 	// Wait for the resource to be available
 	if err := consistency.WaitForUpdate(ctx, ResourceExistenceFunc(r.client, model, false)); err != nil {
-		resp.Diagnostics.AddError("Error", fmt.Sprintf("waiting for creation of %s: %v", model.Url.ValueString(), err))
+		resp.Diagnostics.AddError("Error", fmt.Sprintf("waiting for update of %s: %v", model.Url.ValueString(), err))
 		return
 	}
 
