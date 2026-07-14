@@ -239,7 +239,7 @@ func (r *MSGraphUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Pla
 	if isCreate {
 		readRetryOptions = clients.CombineRetryOptions(
 			clients.NewRetryOptionsForReadAfterCreate(),
-			clients.NewRetryOptions(model.Retry),
+			readRetryOptions,
 		)
 	}
 	options = clients.RequestOptions{

@@ -564,7 +564,7 @@ func ResourceExistenceFunc(client *clients.MSGraphClient, model *MSGraphResource
 		if readAfterCreate {
 			retryOptions = clients.CombineRetryOptions(
 				clients.NewRetryOptionsForReadAfterCreate(),
-				clients.NewRetryOptions(model.Retry),
+				retryOptions,
 			)
 		}
 
