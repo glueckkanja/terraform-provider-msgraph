@@ -1,5 +1,9 @@
 ---
 name: Vendor Dependencies Check
+
+permissions:
+  contents: read
+
 on:
   pull_request:
     types: ['opened', 'synchronize']
@@ -17,7 +21,9 @@ jobs:
       fail-fast: true
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-      - uses: aquaproj/aqua-installer@a78671ff723534c879a9c8aa62c99a3a05dddb49 # v4.0.5
+        with:
+          persist-credentials: false
+      - uses: aquaproj/aqua-installer@96a9bc20066c5bf5e275b41019cfc165b25f4e2e # v4.0.5
         with:
           aqua_version: v2.61.0
           aqua_opts: ''
